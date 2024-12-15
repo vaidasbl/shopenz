@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+*.log.*
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+bower_components/
+
+# Environment files
+.env
+.env.*.local
+
+# Build output
+dist/
+build/
+out/
+target/
+*.cache
+cache/
+.next/
+
+#IDE
+.idea

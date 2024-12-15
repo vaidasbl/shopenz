@@ -1,0 +1,12 @@
+###
+POST http://localhost:9001/api/product
+Content-Type: application/json
+
+{
+  "name": "punciakos2"
+}
+
+
+###
+GET http://localhost:9001/api/product
+
