@@ -11,7 +11,6 @@ volumes:
     driver: local
 
 services:
-  # PostgreSQL Database Service
   postgres:
     image: postgres:13
     container_name: shopenz
@@ -20,9 +19,9 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: shopenz_db
     ports:
-      - "9999:5432"  # Mapping PostgreSQL port to host
+      - "9999:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persist data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - kafka-net
 
