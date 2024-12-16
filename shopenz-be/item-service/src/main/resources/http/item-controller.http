@@ -1,0 +1,18 @@
+###
+POST http://localhost:9003/api/item
+Content-Type: application/json
+
+{
+  "name": "Butter",
+  "stock": 2
+}
+
+
+###
+GET http://localhost:9003/api/item
+
+###
+PUT http://localhost:9003/api/item/3/add/1
+
+###
+PUT http://localhost:9003/api/item/3/remove/1

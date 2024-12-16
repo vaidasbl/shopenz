@@ -11,5 +11,5 @@ Content-Type: application/json
 GET http://localhost:9001/api/user
 
 ###
-DELETE http://localhost:9001/api/user/54
+DELETE http://localhost:9001/api/user/3
 
