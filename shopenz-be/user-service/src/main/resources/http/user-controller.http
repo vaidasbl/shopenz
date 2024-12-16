@@ -3,8 +3,7 @@ POST http://localhost:9001/api/user
 Content-Type: application/json
 
 {
-  "name": "user",
-  "role": "GUEST"
+  "name": "user"
 }
 
 

@@ -29,6 +29,11 @@ public class UserService
         userRepository = pRepository;
     }
 
+    public List<User> getAllUsers()
+    {
+        return userRepository.findAll();
+    }
+
     @Transactional
     public User createUser(User user)
     {
@@ -37,16 +42,6 @@ public class UserService
         kafkaTemplate.send(userCreatedTopic, "1", createdUser.getId());
 
         return createdUser;
-    }
-
-    public List<User> getAllUsers()
-    {
-        return userRepository.findAll();
-    }
-
-    public User getUserById(long id)
-    {
-        return userRepository.findById(id).orElse(null);
     }
 
     @Transactional

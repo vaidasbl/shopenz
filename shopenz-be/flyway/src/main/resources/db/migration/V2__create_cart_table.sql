@@ -1,0 +1,4 @@
+CREATE TABLE cart (
+    id      BIGSERIAL PRIMARY KEY,
+    user_id BIGSERIAL NOT NULL
+);
