@@ -3,6 +3,6 @@ package lt.shopenz.model;
 public enum Role
 {
     GUEST,
-    AUTHORIZED,
+    USER,
     ADMIN
 }
