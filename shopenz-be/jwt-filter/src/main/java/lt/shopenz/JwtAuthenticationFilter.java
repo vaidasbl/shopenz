@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
-    private static final String SECRET_KEY = "kjashdkjasdbnkqwmbewjklhdaklsdhaskldhjwkehjkalshdkjasbdnwqkhjleajskldbasbmndwqkehjasldbnasjadkalksjdklajsdkljasdjnajhfghfhrtytrksdnjaksdnaksdasndamsnd";
+    private static final String SECRET_KEY = "ilikevoyageilikevoyagewetraveltogethermeandmysackvoyagesohightothemountainsohsohightothemountainsahahahahahaha123";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

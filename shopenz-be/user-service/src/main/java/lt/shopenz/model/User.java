@@ -1,5 +1,6 @@
 package lt.shopenz.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -9,8 +10,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor
+@Getter
 @Entity(name = "\"user\"")
 public class User
 {
@@ -18,8 +19,17 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(unique = true)
+    private String email;
+
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.GUEST;
+    private Role role = Role.USER;
+
+    public User(String email, String password)
+    {
+        this.email = email;
+        this.password = password;
+    }
 }

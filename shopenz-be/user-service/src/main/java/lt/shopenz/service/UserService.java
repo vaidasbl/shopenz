@@ -1,12 +1,14 @@
 package lt.shopenz.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import lt.shopenz.dto.UserRegisterDto;
 import lt.shopenz.model.User;
 import lt.shopenz.repository.UserRepository;
 
@@ -23,25 +25,35 @@ public class UserService
 
     private final UserRepository userRepository;
 
-    public UserService(KafkaTemplate<String, Long> pTemplate, UserRepository pRepository)
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserService(KafkaTemplate<String, Long> pTemplate, UserRepository pRepository, final BCryptPasswordEncoder pEncoder)
     {
         kafkaTemplate = pTemplate;
         userRepository = pRepository;
-    }
-
-    public List<User> getAllUsers()
-    {
-        return userRepository.findAll();
+        passwordEncoder = pEncoder;
     }
 
     @Transactional
-    public User createUser(User user)
+    public void registerUser(UserRegisterDto userRegisterDto)
     {
+        if (!userRegisterDto.isPasswordsMatching())
+        {
+            throw new IllegalStateException("Passwords do not match");
+        }
+
+        if (getUserByEmail(userRegisterDto.getEmail()).isPresent())
+        {
+            throw new IllegalStateException("Email already exists");
+        }
+
+        String hashedPassword = passwordEncoder.encode(userRegisterDto.getPassword());
+
+        User user = new User(userRegisterDto.getEmail(), hashedPassword);
+
         User createdUser = userRepository.save(user);
 
         kafkaTemplate.send(userCreatedTopic, "1", createdUser.getId());
-
-        return createdUser;
     }
 
     @Transactional
@@ -51,4 +63,10 @@ public class UserService
 
         kafkaTemplate.send(userDeletedTopic, "1", userId);
     }
+
+    public Optional<User> getUserByEmail(String email)
+    {
+        return userRepository.findByEmail(email);
+    }
+
 }

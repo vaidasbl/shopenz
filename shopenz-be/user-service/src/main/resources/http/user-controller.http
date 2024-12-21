@@ -1,15 +1,24 @@
-###
-POST http://localhost:9001/api/user
+### TEST
+GET http://localhost:9001/api/user/test
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2aWVuc2R1dHJ5cyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzM0ODIyMTg5LCJleHAiOjE3MzQ4MjI0ODl9.rrrk1OsknvwwG3RKcCODkz464tthbl3raCCbL5aTlbci4gsemKA9M4pm0N5SGEbrTmwTkc3hssslv36--xXxsw
+
+### LOGIN
+POST http://localhost:9001/api/user/login
 Content-Type: application/json
 
 {
-  "name": "user"
+  "email": "viensdutrys",
+  "password": "123"
 }
 
+### REGISTER
+POST http://localhost:9001/api/user/register
+Content-Type: application/json
 
-###
-GET http://localhost:9001/api/user
+{
+  "email": "viensdutrys",
+  "password": "123",
+  "repeatedPassword": "123"
+}
 
-###
-DELETE http://localhost:9001/api/user/3
 
