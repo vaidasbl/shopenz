@@ -1,18 +1,38 @@
-###
-POST http://localhost:9003/api/item
+@authToken = eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpZCI6MiwiaWF0IjoxNzM1MTUxNzM0LCJleHAiOjE3MzUxNTQ3MzR9.s2_GQK_902VOJBdiT9hGCN2iKqpbo30tF-yMHas4DOpIC2L5Ip4QFOXnzA5LkLNxlCN-LBq4qXJ18bkHuBLaag
+
+### GET ALL
+GET http://localhost:9003/api/items
+Authorization: Bearer {{authToken}}
+
+### ADD ITEM
+POST http://localhost:9003/api/items
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
   "name": "Butter",
-  "stock": 2
+  "stock": 5
+}
+
+### UPDATE ITEM BY ID
+PUT http://localhost:9003/api/items/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "ButterX",
+  "stock": 5
 }
 
 ###
-GET http://localhost:9003/api/item
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczNDU0MTM0MiwiZXhwIjoxNzM0NjI3NzQyfQ.3d5pT_dB5vKMC81SqPhYjpwaO8GT8JFL3lmTr53FP8abseR9XghiglKIz_T4LX9EpyRuTFP1w2bVmiNHdWZphw
+PUT http://localhost:9003/api/items/3/add/2
+Authorization: Bearer {{authToken}}
+
 
 ###
-PUT http://localhost:9003/api/item/3/add/1
+PUT http://localhost:9003/api/items/3/remove/1
 
 ###
-PUT http://localhost:9003/api/item/3/remove/1
+GET http://localhost:9003/api/items/carts/2
+Authorization: Bearer {{authToken}}
+

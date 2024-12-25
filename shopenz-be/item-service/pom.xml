@@ -38,7 +38,7 @@
         </dependency>
         <dependency>
             <groupId>lt.shopenz-be</groupId>
-            <artifactId>jwt-filter</artifactId>
+            <artifactId>jwt-utils</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

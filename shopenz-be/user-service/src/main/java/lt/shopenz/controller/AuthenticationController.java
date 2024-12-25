@@ -1,11 +1,8 @@
 package lt.shopenz.controller;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.Date;
-import java.util.Optional;
+import static lt.shopenz.JwtUtils.generateJwt;
 
-import javax.crypto.spec.SecretKeySpec;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lt.shopenz.dto.UserLoginDto;
@@ -26,13 +21,11 @@ import lt.shopenz.model.User;
 import lt.shopenz.service.UserService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class AuthenticationController
 {
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
-
-    private static final String SECRET_KEY = "ilikevoyageilikevoyagewetraveltogethermeandmysackvoyagesohightothemountainsohsohightothemountainsahahahahahaha123";
 
     @Autowired
     public AuthenticationController(final UserService userService, final BCryptPasswordEncoder passwordEncoder)
@@ -48,7 +41,8 @@ public class AuthenticationController
 
         if (optionalUser.isPresent() && passwordEncoder.matches(userLoginDto.getPassword(), optionalUser.get().getPassword()))
         {
-            String token = generateJwtToken(optionalUser.get());
+            User user = optionalUser.get();
+            String token = generateJwt(user.getEmail(), user.getRole().name(), user.getId());
 
             return ResponseEntity.ok(new JwtResponse(token));
         }
@@ -69,19 +63,6 @@ public class AuthenticationController
         {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private String generateJwtToken(User user)
-    {
-        Key key = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
-
-        return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("role", user.getRole())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 300000)) // 5 min expiration
-                .signWith(key)
-                .compact();
     }
 
     @Getter

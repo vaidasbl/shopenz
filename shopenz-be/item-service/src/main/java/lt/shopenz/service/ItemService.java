@@ -25,38 +25,30 @@ public class ItemService
         cartItemRepository = pRepository;
     }
 
-    public List<Item> getAllItems()
+    public void addItemToUsersCart(Long itemId, Long userId)
     {
-        return itemRepository.findAll();
-    }
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
 
-    public Item addItem(Item item)
-    {
-        return itemRepository.save(item);
-    }
-
-    public void addItemToCart(Long itemId, Long cartId)
-    {
-        Optional<Item> item = itemRepository.findById(itemId);
-
-        if (item.isEmpty() || item.get().getStock() < 1)
+        if (optionalItem.isEmpty() || optionalItem.get().getStock() < 1)
         {
             throw new NoSuchElementException("Failed to add item to a cart, quantity less than 1");
         }
 
-        CartItem cartItem = cartItemRepository.findByItemIdAndCartId(itemId, cartId).orElse(new CartItem(itemId, cartId));
+        Item item = optionalItem.get();
+
+        CartItem cartItem = cartItemRepository.findByItemIdAndUserId(itemId, userId).orElse(new CartItem(item, userId));
 
         cartItem.addToQuantity();
-        item.get().removeFromStock();
+        item.removeFromStock();
 
-        itemRepository.save(item.get());
+        itemRepository.save(item);
         cartItemRepository.save(cartItem);
     }
 
-    public void removeItemFromCart(Long itemId, Long cartId)
+    public void removeItemFromUsersCart(Long itemId, Long userId)
     {
-        CartItem cartItem = cartItemRepository.findByItemIdAndCartId(itemId, cartId)
-                .orElseThrow(() -> new NoSuchElementException("CartItem not found. ItemId: " + itemId + ", CartId: " + cartId));
+        CartItem cartItem = cartItemRepository.findByItemIdAndUserId(itemId, userId)
+                .orElseThrow(() -> new NoSuchElementException("CartItem not found. ItemId: " + itemId + ", UserId: " + userId));
 
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NoSuchElementException("Item not found. ItemId: " + itemId));
@@ -74,6 +66,10 @@ public class ItemService
         {
             cartItemRepository.save(cartItem);
         }
+    }
 
+    public List<CartItem> getUsersCartItems(Long userId)
+    {
+        return cartItemRepository.findByUserId(userId);
     }
 }

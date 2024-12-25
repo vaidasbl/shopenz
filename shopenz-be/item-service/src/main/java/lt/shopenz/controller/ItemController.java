@@ -1,21 +1,19 @@
 package lt.shopenz.controller;
 
-import java.util.List;
-
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lt.shopenz.model.Item;
+import jakarta.servlet.http.HttpServletRequest;
+import lt.shopenz.JwtUtils;
 import lt.shopenz.service.ItemService;
 
 @RestController
-@RequestMapping("/api/item")
+@RequestMapping("/api/items")
 public class ItemController
 {
     private final ItemService itemService;
@@ -25,29 +23,29 @@ public class ItemController
         this.itemService = itemService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("")
-    public List<Item> getAllItems()
+    @PutMapping("/{itemId}/add/{userId}")
+    public void addItemToCart(@PathVariable Long itemId, @PathVariable Long userId)
     {
-        return itemService.getAllItems();
+        itemService.addItemToUsersCart(itemId, userId);
     }
 
-    @PostMapping("")
-    public Item addItem(@RequestBody Item item)
+    @PutMapping("/{itemId}/remove/{userId}")
+    public void removeItemFromCart(@PathVariable Long itemId, @PathVariable Long userId)
     {
-        return itemService.addItem(item);
+        itemService.removeItemFromUsersCart(itemId, userId);
     }
 
-    @PutMapping("/{itemId}/add/{cartId}")
-    public void addItemToCart(@PathVariable Long itemId, @PathVariable Long cartId)
+    @GetMapping("/carts/{userId}")
+    public ResponseEntity<?> getUsersCartItems(HttpServletRequest request, @PathVariable Long userId)
     {
-        itemService.addItemToCart(itemId, cartId);
-    }
+        Long requesterId = JwtUtils.getUserIdFromRequest(request);
 
-    @PutMapping("/{itemId}/remove/{cartId}")
-    public void removeItemFromCart(@PathVariable Long itemId, @PathVariable Long cartId)
-    {
-        itemService.removeItemFromCart(itemId, cartId);
+        if (requesterId == null || !requesterId.equals(userId))
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You dont have permission to access this cart items");
+        }
+
+        return ResponseEntity.ok().body(itemService.getUsersCartItems(userId));
     }
 
 }

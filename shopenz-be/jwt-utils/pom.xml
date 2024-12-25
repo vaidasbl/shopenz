@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jwt-filter</artifactId>
+    <artifactId>jwt-utils</artifactId>
 
     <properties>
         <java.version>17</java.version>

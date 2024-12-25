@@ -1,5 +1,9 @@
 package lt.shopenz;
 
+import static lt.shopenz.JwtUtils.SECRET_KEY;
+import static lt.shopenz.JwtUtils.getJwtFromRequest;
+import static lt.shopenz.JwtUtils.validateJwtToken;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -29,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
-    private static final String SECRET_KEY = "ilikevoyageilikevoyagewetraveltogethermeandmysackvoyagesohightothemountainsohsohightothemountainsahahahahahaha123";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -61,35 +64,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
         else
         {
             filterChain.doFilter(request, response);
-        }
-    }
-
-    private String getJwtFromRequest(HttpServletRequest request)
-    {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer "))
-        {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    private boolean validateJwtToken(String authToken)
-    {
-        Key key = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
-
-        try
-        {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(authToken);
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            return false;
         }
     }
 

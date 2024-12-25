@@ -1,5 +1,7 @@
 CREATE TABLE cart_item (
-    item_id  BIGSERIAL PRIMARY KEY,
+    id       BIGSERIAL PRIMARY KEY,
+    item_id  BIGSERIAL,
+    name     VARCHAR(255) NOT NULL,
     quantity BIGSERIAL,
-    cart_id  BIGSERIAL NOT NULL
+    user_id  BIGSERIAL    NOT NULL
 );
