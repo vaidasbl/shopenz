@@ -1,0 +1,46 @@
+//https://colorhunt.co/palette/243642387478629584e2f1e7
+
+$text-color: #243642;
+$text-color-hover: #44667C;
+
+.navigation-bar-container {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  justify-content: center;
+  padding: 12px 0 12px 0;
+  background: white;
+}
+
+.navigation-item {
+  position: relative;
+  padding-bottom: 4px;
+  cursor: pointer;
+  user-select: none;
+  color: $text-color;
+}
+
+.navigation-item:hover {
+  color: $text-color-hover
+}
+
+
+.navigation-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+  background-color: $text-color;
+
+}
+
+.navigation-item:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+  background-color: $text-color-hover;
+}
